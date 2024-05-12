@@ -1,11 +1,11 @@
-import { useEffect } from "react"
+import { useEffect } from "react";
 // import useAxios from "../services/useAxios"
-import useStockRequest from "../services/useStockRequest"
-import { useSelector } from "react-redux"
-import Typography from "@mui/material/Typography"
-import Button from "@mui/material/Button"
-import Grid from "@mui/material/Grid"
-import FirmCard from "../components/FirmCard"
+import useStockRequest from "../services/useStockRequest";
+import { useSelector } from "react-redux";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import FirmCard from "../components/FirmCard";
 
 // export const getFirms = async () => {
 //   try {
@@ -19,15 +19,15 @@ import FirmCard from "../components/FirmCard"
 const Firms = () => {
   // const { axiosToken } = useAxios()
   // const { getFirms, getSales } = useStockRequest()
-  const { getStock } = useStockRequest()
-  const { firms } = useSelector((state) => state.stock)
+  const { getStock } = useStockRequest();
+  const { firms } = useSelector((state) => state.stock);
 
   useEffect(() => {
     // getFirms()
     // getSales()
     // getStock("sales")
-    getStock("firms")
-  }, [])
+    getStock("firms");
+  });
 
   return (
     <div>
@@ -45,7 +45,7 @@ const Firms = () => {
         ))}
       </Grid>
     </div>
-  )
-}
+  );
+};
 
-export default Firms
+export default Firms;
