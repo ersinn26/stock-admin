@@ -3,8 +3,7 @@ import useAxios from "./useAxios"
 import {
   fetchFail,
   fetchStart,
-  getFirmsSuccess,
-  getSalesSuccess,
+  
   getStockSuccess,
 } from "../features/stockSlice"
 import { toastErrorNotify, toastSuccessNotify } from "../helper/ToastNotify"
