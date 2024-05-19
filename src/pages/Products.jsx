@@ -5,10 +5,7 @@ import Button from "@mui/material/Button";
 import ProductModal from "../components/ProductModal";
 import ProductTable from "../components/ProductTable";
 import { useSelector } from "react-redux";
-import TableSkeleton, {
-  ErrorMessage,
-  NoDataMessage,
-} from "../components/DataFetchMessages";
+import TableSkeleton, { NoDataMessage } from "../components/DataFetchMessages";
 
 const Products = () => {
   const { getStock } = useStockRequest();
@@ -26,10 +23,10 @@ const Products = () => {
     setInfo(initialState);
   };
   useEffect(() => {
-    getStock("product");
+    getStock("products");
     getStock("categories");
     getStock("brands");
-  });
+  }, []);
 
   return (
     <div>
@@ -37,19 +34,14 @@ const Products = () => {
         Products
       </Typography>
 
-      <Button
-        variant="contained"
-        onClick={handleOpen}
-        sx={{ mb: 3 }}
-        disabled={error}
-      >
+      <Button variant="contained" onClick={handleOpen} disabled={error}>
         New Product
       </Button>
 
       {loading && <TableSkeleton />}
-      {error && <ErrorMessage />}
-      {!error && !loading && products.length > 0 && <ProductTable />}
-      {!error && !products.length && <NoDataMessage />}
+      {!loading && products.length > 0 && <ProductTable />}
+      {!loading && !products.length && <NoDataMessage />}
+
       <ProductModal
         handleClose={handleClose}
         open={open}
