@@ -3,8 +3,8 @@ import useAxios from "./useAxios"
 import {
   fetchFail,
   fetchStart,
-  
   getStockSuccess,
+  getProPurBraFirmSuccess,
 } from "../features/stockSlice"
 import { toastErrorNotify, toastSuccessNotify } from "../helper/ToastNotify"
 
@@ -41,7 +41,7 @@ const useStockRequest = () => {
       const stockData = data.data
       dispatch(getStockSuccess({ stockData, path }))
     } catch (error) {
-      // toastErrorNotify(`${path} verileri çekilememiştir.`)
+      toastErrorNotify(`${path} verileri çekilememiştir.`)
       dispatch(fetchFail())
       console.log(error)
     }
@@ -78,14 +78,37 @@ const useStockRequest = () => {
     try {
       await axiosToken.put(`/${path}/${info._id}`, info)
       getStock(path)
+      toastSuccessNotify(`${path} basariliyla guncellenmiştir.`)
     } catch (error) {
+      toastErrorNotify(`${path} guncellenememiştir.`)
       dispatch(fetchFail())
       console.log(error)
     }
   }
+
+  const getProPurBraFirmStock = async () => {
+    dispatch(fetchStart())
+    try {
+      const [pro, pur, bra, fir] = await Promise.all([
+        axiosToken("/products"),
+        axiosToken("/purchases"),
+        axiosToken("/brands"),
+        axiosToken("/firms"),
+      ])
+      const products = pro?.data?.data
+      const purchases = pur?.data?.data
+      const brands = bra?.data?.data
+      const firms = fir?.data?.data
+
+      dispatch(getProPurBraFirmSuccess({ products, purchases, brands, firms }))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   // return { getFirms, getSales }
 
-  return { getStock, deleteStock, postStock, putStock }
+  return { getStock, deleteStock, postStock, putStock, getProPurBraFirmStock }
 }
 
 export default useStockRequest
