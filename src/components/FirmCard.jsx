@@ -18,7 +18,7 @@ export default function FirmCard({ firm, handleOpen, setInfo }) {
   return (
     <Card
       sx={{
-        maxWidth: 345,
+        maxWidth: 350,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -31,7 +31,7 @@ export default function FirmCard({ firm, handleOpen, setInfo }) {
       <CardMedia
         component="img"
         alt={firm?.name}
-        height="140"
+        height= "140"
         image={firm?.image}
       />
       <CardContent>
