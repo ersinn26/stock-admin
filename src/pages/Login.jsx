@@ -1,20 +1,23 @@
-import Avatar from "@mui/material/Avatar"
-import Container from "@mui/material/Container"
-import Grid from "@mui/material/Grid"
-import Typography from "@mui/material/Typography"
-import LockIcon from "@mui/icons-material/Lock"
-import image from "../assets/result.svg"
-import { Link } from "react-router-dom"
-import Box from "@mui/material/Box"
-import TextField from "@mui/material/TextField"
-import { Button } from "@mui/material"
-import { Formik, Form } from "formik"
-import { object, string } from "yup"
+import Avatar from "@mui/material/Avatar";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import LockIcon from "@mui/icons-material/Lock";
+import image from "../assets/result.svg";
+import { Link } from "react-router-dom";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import { Button } from "@mui/material";
+import { Formik, Form } from "formik";
+import { object, string } from "yup";
 // import { login } from "../services/useApiRequest"
-import useApiRequest from "../services/useApiRequest"
+import useApiRequest from "../services/useApiRequest";
+import { red } from "@mui/material/colors";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { IconButton } from "@mui/material";
 
 const Login = () => {
-  const { login } = useApiRequest()
+  const { login } = useApiRequest();
 
   const loginSchema = object({
     email: string()
@@ -31,8 +34,10 @@ const Login = () => {
         /[@$!%*?&]+/,
         "Şifre en az bir özel karakter(@$!%*?&) içermelidir."
       ),
-  })
-
+  });
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text)
+  }
   return (
     <Container maxWidth="lg">
       <Grid
@@ -80,9 +85,9 @@ const Login = () => {
               //? Global state güncellenmesi
               //? form resetleme
               //? navigate
-              login(values)
-              actions.resetForm()
-              actions.setSubmitting(false) //? isSubmitting
+              login(values);
+              actions.resetForm();
+              actions.setSubmitting(false); //? isSubmitting
             }}
           >
             {({
@@ -135,6 +140,33 @@ const Login = () => {
             <Link to="/register">Do you have not an account?</Link>
           </Box>
         </Grid>
+        <Grid item xs={10} sm={7} md={6}>
+          <Box sx={{ textAlign: "center", mt: 2 }}>
+            <Typography sx={{ color: red[500], display: "inline" }}>
+              Testing email: Aslan@cw.com
+            </Typography>
+            <IconButton
+              onClick={() => copyToClipboard("Aslan@cw.com")}
+              size="small"
+            >
+              <ContentCopyIcon fontSize="small" />
+            </IconButton>
+          </Box>
+          <Box sx={{ textAlign: "center", mt: 2 }}>
+            <Typography sx={{ color: red[500], display: "inline" }}>
+              Testing password: Aslan1234!
+            </Typography>
+            <IconButton
+              onClick={() => copyToClipboard("Aslan1234!")}
+              size="small"
+            >
+              <ContentCopyIcon fontSize="small" />
+            </IconButton>
+          </Box>
+          <Container>
+            <img src={image} alt="img" />
+          </Container>
+        </Grid>
 
         <Grid item xs={10} sm={7} md={6}>
           <Container>
@@ -143,7 +175,7 @@ const Login = () => {
         </Grid>
       </Grid>
     </Container>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
