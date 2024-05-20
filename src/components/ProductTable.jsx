@@ -1,50 +1,53 @@
-import * as React from "react"
 import Box from "@mui/material/Box"
-import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid"
+import { DataGrid, GridActionsCellItem, GridToolbar } from "@mui/x-data-grid"
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever"
 import useStockRequest from "../services/useStockRequest"
-
-const rows = [
-  { id: 1, lastName: "Snow", firstName: "Jon", age: 14 },
-  { id: 2, lastName: "Lannister", firstName: "Cersei", age: 31 },
-  { id: 3, lastName: "Lannister", firstName: "Jaime", age: 31 },
-  { id: 4, lastName: "Stark", firstName: "Arya", age: 11 },
-  { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
-  { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-  { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-  { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-]
+import { useSelector } from "react-redux"
 
 export default function ProductTable() {
   const { deleteStock } = useStockRequest()
+  const { products } = useSelector((state) => state.stock)
+
+  const getRowId = (row) => row._id
 
   const columns = [
-    { field: "_id", headerName: "#", minWidth: 100, flex: 1.2 },
+    { field: "_id", headerName: "#", minWidth: 150, flex: 1.4 },
     {
-      field: "categories",
+      field: "categoryId",
       headerName: "Categories",
-      width: 150,
-      editable: true,
+      flex: 1,
+      minWidth: 100,
+      // valueGetter: (value, row) => {
+      //   console.log("ROW:", row, "VALUE:", value)
+      //   return value?.name
+      // },
+      valueGetter: (value) => value?.name,
     },
     {
-      field: "brand",
+      field: "brandId",
       headerName: "Brands",
+      headerAlign: "center",
+      align: "center",
       width: 150,
-      editable: true,
+      flex: 1.2,
+      // editable: true,
+      valueGetter: (value) => value?.name,
     },
     {
       field: "name",
       headerName: "Name",
-      type: "number",
-      width: 110,
-      editable: true,
+      headerAlign: "center",
+      align: "center",
+      flex: 1.1,
+      miWidth: 110,
+      // editable: true,
     },
     {
-      field: "stock",
+      field: "quantity",
       headerName: "Stock",
-      description: "This column has a value getter and is not sortable.",
-      sortable: false,
+      sortable: true,
+      headerAlign: "center",
+      align: "center",
       width: 160,
     },
     {
@@ -52,7 +55,6 @@ export default function ProductTable() {
       type: "actions",
       headerName: "Operations",
       getActions: (props) => {
-        console.log(props)
         return [
           <GridActionsCellItem
             icon={<DeleteForeverIcon />}
@@ -65,20 +67,16 @@ export default function ProductTable() {
   ]
 
   return (
-    <Box sx={{ height: 400, width: "100%" }}>
+    <Box sx={{ width: "100%", mt: 3 }}>
       <DataGrid
-        rows={rows}
+        autoHeight
+        rows={products}
         columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 5,
-            },
-          },
-        }}
-        pageSizeOptions={[5]}
+        pageSizeOptions={[5, 10, 25, 50, 100]}
         checkboxSelection
         disableRowSelectionOnClick
+        getRowId={getRowId}
+        slots={{ toolbar: GridToolbar }}
       />
     </Box>
   )
